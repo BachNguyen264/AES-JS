@@ -1,4 +1,4 @@
-import { padText, unpadText, textToBytes, bytesToText, generateAESKey } from "./util.js";
+import { padText, unpadText, textToBytes, bytesToText } from "./util.js";
 import { aesEncrypt, aesDecrypt } from "./aesAlgorithm.js";
 
 export function aesEncryptText(plaintext, key) {
@@ -64,18 +64,31 @@ function aesDecryptCBC(ciphertext, key) {
     return unpadText(text); // Loại bỏ padding và chuyển về text
 }
   
-function measureAESPerformance(plaintext, key) {
+function measureAESPerformance(plaintext, key, mode='ECB', iv = null) {
+  if (mode ==='ECB'){
     const startEncrypt = performance.now();
     const ciphertext = aesEncryptText(plaintext, key);
     const endEncrypt = performance.now();
     const encryptionTime = (endEncrypt - startEncrypt).toFixed(4);
   
     const startDecrypt = performance.now();
-    const decryptedText = aesDecryptText(ciphertext, key);
+    const decryptedText = aesDecryptText(JSON.parse(JSON.stringify(ciphertext)), key);
     const endDecrypt = performance.now();
     const decryptionTime = (endDecrypt - startDecrypt).toFixed(4);
 
     return { ciphertext, decryptedText, encryptionTime, decryptionTime };
+  }else if(mode === 'CBC'){
+    const startEncrypt = performance.now();
+    const ciphertext = aesEncryptCBC(plaintext, key, iv);
+    const endEncrypt = performance.now();
+    const encryptionTime = (endEncrypt - startEncrypt).toFixed(4);
+  
+    const startDecrypt = performance.now();
+    const decryptedText = aesDecryptCBC(JSON.parse(JSON.stringify(ciphertext)), key);
+    const endDecrypt = performance.now();
+    const decryptionTime = (endDecrypt - startDecrypt).toFixed(4);
+    return { ciphertext, decryptedText, encryptionTime, decryptionTime };
+  }
 }
 
 // Mã hóa file
@@ -100,6 +113,4 @@ function decryptFile(encryptedData, key, mode = "ECB") {
   return decryptedData;
 }
 
-export { encryptFile, decryptFile };
-
-console.log(measureAESPerformance('Hello moi nguoi', generateAESKey(128)));
+export { encryptFile, decryptFile, measureAESPerformance };

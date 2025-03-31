@@ -1,5 +1,6 @@
-import { encryptFile, decryptFile } from "../script/aesMode.js";
-import { textToBytes, generateAESKeyString } from "../script/util.js";
+import { encryptFile, decryptFile, aesEncryptText, aesDecryptText } from "../script/aesMode.js";
+import { textToBytes, generateAESKeyString, bytesToText } from "../script/util.js";
+import { aesEncrypt, aesDecrypt } from "../script/aesAlgorithm.js";
 
 document.getElementById("encryptBtn").addEventListener("click", () => {
     const fileInput = document.getElementById("fileInput");
@@ -35,3 +36,5 @@ function downloadFile(content, filename) {
     link.download = filename;
     link.click();
 }
+
+//Test aes gốc
