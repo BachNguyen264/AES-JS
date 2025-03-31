@@ -1,7 +1,7 @@
 import { padText, unpadText, textToBytes, bytesToText } from "./util.js";
 import { aesEncrypt, aesDecrypt } from "./aesAlgorithm.js";
 
-export function aesEncryptText(plaintext, key) {
+function aesEncryptText(plaintext, key) {
   plaintext = padText(plaintext); // Đảm bảo đủ bội số của 16 byte
   let bytes = textToBytes(plaintext);
   let ciphertext = [];
@@ -13,7 +13,7 @@ export function aesEncryptText(plaintext, key) {
   return ciphertext;
 }
 
-export function aesDecryptText(ciphertext, key) {
+function aesDecryptText(ciphertext, key) {
   let decryptedBytes = [];
 
   for (let i = 0; i < ciphertext.length; i++) {
@@ -81,36 +81,14 @@ function measureAESPerformance(plaintext, key, mode='ECB', iv = null) {
     const startEncrypt = performance.now();
     const ciphertext = aesEncryptCBC(plaintext, key, iv);
     const endEncrypt = performance.now();
-    const encryptionTime = (endEncrypt - startEncrypt).toFixed(4);
+    const encryptionTime = (endEncrypt - startEncrypt).toFixed(3);
   
     const startDecrypt = performance.now();
     const decryptedText = aesDecryptCBC(JSON.parse(JSON.stringify(ciphertext)), key);
     const endDecrypt = performance.now();
-    const decryptionTime = (endDecrypt - startDecrypt).toFixed(4);
+    const decryptionTime = (endDecrypt - startDecrypt).toFixed(3);
     return { ciphertext, decryptedText, encryptionTime, decryptionTime };
   }
 }
 
-// Mã hóa file
-function encryptFile(fileContent, key, iv = null, mode = "ECB") {
-  let encryptedData;
-  if (mode === "ECB") {
-      encryptedData = aesEncryptText(fileContent, key);
-  } else if (mode === "CBC") {
-      encryptedData = aesEncryptCBC(fileContent, key, iv);
-  }
-  return encryptedData;
-}
-
-// Giải mã file
-function decryptFile(encryptedData, key, mode = "ECB") {
-  let decryptedData;
-  if (mode === "ECB") {
-      decryptedData = aesDecryptText(encryptedData, key);
-  } else if (mode === "CBC") {
-      decryptedData = aesDecryptCBC(encryptedData, key);
-  }
-  return decryptedData;
-}
-
-export { encryptFile, decryptFile, measureAESPerformance };
+export { measureAESPerformance };

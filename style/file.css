@@ -138,6 +138,10 @@ button:hover {
   margin: 5px 0;
 }
 
+.file-label.selected {
+  background: linear-gradient(45deg, #06b6d4, #9333ea);
+}
+
 /* Hiệu ứng fade in */
 @keyframes fadeIn {
   from {
