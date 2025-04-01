@@ -64,31 +64,24 @@ function aesDecryptCBC(ciphertext, key) {
     return unpadText(text); // Loại bỏ padding và chuyển về text
 }
   
-function measureAESPerformance(plaintext, key, mode='ECB', iv = null) {
-  if (mode ==='ECB'){
-    const startEncrypt = performance.now();
-    const ciphertext = aesEncryptText(plaintext, key);
-    const endEncrypt = performance.now();
-    const encryptionTime = (endEncrypt - startEncrypt).toFixed(4);
-  
-    const startDecrypt = performance.now();
-    const decryptedText = aesDecryptText(JSON.parse(JSON.stringify(ciphertext)), key);
-    const endDecrypt = performance.now();
-    const decryptionTime = (endDecrypt - startDecrypt).toFixed(4);
+function measureAESPerformance(plaintext, key, mode = 'ECB', iv = null) {
+  const encrypt = mode === 'ECB' ? aesEncryptText : aesEncryptCBC;
+  const decrypt = mode === 'ECB' ? aesDecryptText : aesDecryptCBC;
 
-    return { ciphertext, decryptedText, encryptionTime, decryptionTime };
-  }else if(mode === 'CBC'){
-    const startEncrypt = performance.now();
-    const ciphertext = aesEncryptCBC(plaintext, key, iv);
-    const endEncrypt = performance.now();
-    const encryptionTime = (endEncrypt - startEncrypt).toFixed(3);
-  
-    const startDecrypt = performance.now();
-    const decryptedText = aesDecryptCBC(JSON.parse(JSON.stringify(ciphertext)), key);
-    const endDecrypt = performance.now();
-    const decryptionTime = (endDecrypt - startDecrypt).toFixed(3);
-    return { ciphertext, decryptedText, encryptionTime, decryptionTime };
-  }
+  const startEncrypt = performance.now();
+  const ciphertext = encrypt(plaintext, key, iv);
+  const endEncrypt = performance.now();
+
+  const startDecrypt = performance.now();
+  const decryptedText = decrypt(JSON.parse(JSON.stringify(ciphertext)), key);
+  const endDecrypt = performance.now();
+
+  return { 
+      ciphertext, 
+      decryptedText, 
+      encryptionTime: (endEncrypt - startEncrypt).toFixed(3), 
+      decryptionTime: (endDecrypt - startDecrypt).toFixed(3) 
+  };
 }
 
 export { measureAESPerformance };
