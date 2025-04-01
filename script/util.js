@@ -18,28 +18,37 @@ function toStateMatrix(input) {
     return state;
 }
 
-// Hàm chuyển đổi giữa giữa Text <=> Bytes
+// Chuyển văn bản thành mảng byte (Hỗ trợ Unicode)
 function textToBytes(text) {
-    let bytes = [];
-    for (let i = 0; i < text.length; i++) {
-        bytes.push(text.charCodeAt(i));
-    }
-    return bytes;
+    return Array.from(new TextEncoder().encode(text)); // Chuyển Uint8Array thành mảng số nguyên
 }
 
+// Chuyển mảng byte thành văn bản (Hỗ trợ Unicode)
 function bytesToText(bytes) {
-    return bytes.map(byte => String.fromCharCode(byte)).join('');
+    return new TextDecoder().decode(new Uint8Array(bytes)); // Chuyển về chuỗi UTF-8
 }
 
-//Hàm padding và unpadding 
+function bytesToBase64(bytes) {
+    return btoa(String.fromCharCode(...bytes));
+}
+function base64ToBytes(base64) {
+    return new Uint8Array(atob(base64).split('').map(c => c.charCodeAt(0)));
+}
+
+// Hàm padding: làm đầy dữ liệu sao cho đủ bội số 16 byte
 function padText(text) {
-    let padLength = 16 - (text.length % 16);
-    return text + String.fromCharCode(padLength).repeat(padLength);
+    let textBytes = textToBytes(text); // Chuyển thành bytes (UTF-8)
+    let padLength = 16 - (textBytes.length % 16);
+    let padding = new Array(padLength).fill(padLength); // Mảng padding
+
+    return textBytes.concat(padding); // Trả về mảng byte đã padding
 }
 
-function unpadText(text) {
-    let padLength = text.charCodeAt(text.length - 1);
-    return text.slice(0, -padLength);
+// Hàm unpadding: loại bỏ padding sau khi giải mã
+function unpadText(paddedBytes) {
+    let padLength = paddedBytes[paddedBytes.length - 1]; // Lấy số padding từ cuối chuỗi
+    let textBytes = paddedBytes.slice(0, -padLength); // Cắt bỏ padding
+    return bytesToText(textBytes); // Chuyển về UTF-8 string
 }
 
 //Sinh khóa ngẫu nhiên
@@ -76,5 +85,6 @@ function downloadFile(content, filename) {
 
 export {gfMultiply, toStateMatrix, textToBytes,
         bytesToText, padText, unpadText, downloadFile,
-        generateAESKey, generateAESKeyString 
+        generateAESKey, generateAESKeyString,
+        bytesToBase64, base64ToBytes
 }

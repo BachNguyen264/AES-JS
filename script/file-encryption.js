@@ -1,5 +1,5 @@
 import { measureAESPerformance} from "../script/aesMode.js";
-import { generateAESKey, downloadFile, bytesToText } from "../script/util.js";
+import { generateAESKey, downloadFile, bytesToBase64, bytesToText } from "../script/util.js";
 
 document.getElementById("startProgram").addEventListener("click", () => {
     const fileInput = document.getElementById("fileInput");
@@ -38,10 +38,10 @@ function processEncryptionResult(result, key, iv = null) {
     downloadFile(decryptedData, "Decryption.txt");
 
     renderOutput(
-        btoa(bytesToText(key)),
+        bytesToBase64(key),
         result.encryptionTime,
         result.decryptionTime,
-        iv ? btoa(bytesToText(iv)) : "N/A"
+        iv ? bytesToBase64(iv) : "N/A"
     );
 }
 

@@ -1,28 +1,27 @@
-import { padText, unpadText, textToBytes, bytesToText } from "./util.js";
+import { padText, unpadText } from "./util.js";
 import { aesEncrypt, aesDecrypt } from "./aesAlgorithm.js";
 
 function aesEncryptText(plaintext, key) {
-  plaintext = padText(plaintext); // Đảm bảo đủ bội số của 16 byte
-  let bytes = textToBytes(plaintext);
-  let ciphertext = [];
-
-  for (let i = 0; i < bytes.length; i += 16) {
-    let block = bytes.slice(i, i + 16);
-    ciphertext.push(aesEncrypt(block, key));
-  }
-  return ciphertext;
+    let bytes = padText(plaintext); // Đảm bảo đủ bội số của 16 byte
+    let ciphertext = [];
+  
+    for (let i = 0; i < bytes.length; i += 16) {
+      let block = bytes.slice(i, i + 16);
+      ciphertext.push(aesEncrypt(block, key));
+    }
+    return ciphertext;
 }
-
+  
 function aesDecryptText(ciphertext, key) {
-  let decryptedBytes = [];
-
-  for (let i = 0; i < ciphertext.length; i++) {
-    let state = aesDecrypt(ciphertext[i], key);
-    decryptedBytes.push(...state.flat()); // Chuyển ma trận 4x4 về mảng 1D
-  }
-
-  let text = bytesToText(decryptedBytes);
-  return unpadText(text);
+    let decryptedBytes = [];
+  
+    for (let i = 0; i < ciphertext.length; i++) {
+      let state = aesDecrypt(ciphertext[i], key);
+      decryptedBytes.push(...state.flat()); // Chuyển ma trận 4x4 về mảng 1D
+    }
+  
+    let text = unpadText(decryptedBytes);
+    return text;
 }
 
 function xorBlocks(block1, block2) {
@@ -30,8 +29,7 @@ function xorBlocks(block1, block2) {
 }
 
 function aesEncryptCBC(plaintext, key, iv) {
-    plaintext = padText(plaintext);
-    let bytes = textToBytes(plaintext);
+    let bytes = padText(plaintext);
     let ciphertext = [];
     let prevBlock = iv; // Khối IV ban đầu
   
@@ -60,8 +58,8 @@ function aesDecryptCBC(ciphertext, key) {
         prevBlock = ciphertext[i]; // Cập nhật khối trước cho vòng lặp tiếp theo
     }
 
-    let text = bytesToText(decryptedText);
-    return unpadText(text); // Loại bỏ padding và chuyển về text
+    let text = unpadText(decryptedText);
+    return text; // Loại bỏ padding và chuyển về text
 }
   
 function measureAESPerformance(plaintext, key, mode = 'ECB', iv = null) {
