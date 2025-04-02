@@ -16,10 +16,12 @@ function generateKey(){
     const keySize = getSelectedKeySize();
     const key = generateAESKeyString(keySize);
     document.querySelector('#key').value = key;
+    document.getElementById('inputKey').value = key;
 }
 
-function renderOutput(result){
-    document.querySelector('#cipherText').value = bytesToText(result.ciphertext.flat(Infinity));
+function renderOutput(result,mode){
+    const ciphertext = mode === 'ECB' ? result.ciphertext.flat(Infinity): result.ciphertext.flat(Infinity).slice(17);
+    document.querySelector('#cipherText').value = bytesToText(ciphertext);
     document.querySelector('#decryptedText').value = result.decryptedText;
     document.querySelector('#encryptionTime').value = result.encryptionTime;
     document.querySelector('#decryptionTime').value = result.decryptionTime;
@@ -47,10 +49,10 @@ function startAES(){
             return;
         }
         const result = measureAESPerformance(plainText,textToBytes(key),mode,textToBytes(iv));
-        renderOutput(result);
+        renderOutput(result,mode);
     }else{
         const result = measureAESPerformance(plainText, textToBytes(key));
-        renderOutput(result);
+        renderOutput(result,mode);
     }
 }
 
