@@ -1,16 +1,24 @@
 import { measureAESPerformance} from "../script/aesMode.js";
-import { generateAESKey, downloadFile, bytesToBase64, bytesToText } from "../script/util.js";
+import { generateAESKey, downloadFile, bytesToBase64, bytesToText, generateAESKeyString,textToBytes } from "../script/util.js";
 
 document.getElementById("startProgram").addEventListener("click", () => {
     const fileInput = document.getElementById("fileInput");
     const mode = document.querySelector('input[name="mode"]:checked').value;
     const keySize = parseInt(document.querySelector('input[name="keySize"]:checked').value);
-    const key = generateAESKey(keySize); // Sinh khóa ngẫu nhiên
+    //const key = generateAESKey(keySize); // Sinh khóa ngẫu nhiên
     if (fileInput.files.length === 0) {
         alert("Vui lòng chọn một file để mã hóa!");
         return;
     }
 
+    let key = prompt('Vui lòng nhập khóa. Gợi ý:', generateAESKeyString(keySize));
+    if(![16, 24, 32].includes(key.length)){
+        alert('Độ dài key không hợp lệ. Chương trình sẽ tự động gán key ngẫu nhiên');
+        key = generateAESKey(keySize);
+    }else{
+        key = textToBytes(key); 
+    }
+    
     const file = fileInput.files[0];
     const reader = new FileReader();
 

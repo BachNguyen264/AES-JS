@@ -82,4 +82,4 @@ function measureAESPerformance(plaintext, key, mode = 'ECB', iv = null) {
   };
 }
 
-export { measureAESPerformance };
+export { measureAESPerformance, aesDecryptCBC, aesEncryptCBC, aesDecryptText, aesEncryptText};

@@ -20,7 +20,7 @@ function generateKey(){
 }
 
 function renderOutput(result,mode){
-    const ciphertext = mode === 'ECB' ? result.ciphertext.flat(Infinity): result.ciphertext.flat(Infinity).slice(17);
+    const ciphertext = mode === 'ECB' ? result.ciphertext.flat(Infinity): result.ciphertext.flat(Infinity).slice(16);
     document.querySelector('#cipherText').value = bytesToText(ciphertext);
     document.querySelector('#decryptedText').value = result.decryptedText;
     document.querySelector('#encryptionTime').value = result.encryptionTime;

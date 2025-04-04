@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AES Encryption/Decryption</title>
+    <link rel="stylesheet" href="./style/encrypt-decrypt.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Giải mã</h2>
+        <input type="file" id="cipherFileInput">
+        <select id="decryptMode">
+            <option value="ECB">ECB</option>
+            <option value="CBC">CBC</option>
+        </select>
+        <label>Nhập khóa:</label>
+        <input type="text" id="decryptKey" placeholder="Nhập khóa">
+        <button id="decryptBtn">📜 Giải mã</button>
+        <textarea id="decryptedOutput" readonly placeholder="Bản rõ sau khi giải mã"></textarea>
+        <p>Thời gian giải mã: <span id="decryptTime">0 ms</span></p>
+    </div>
+    
+    <div class="container">
+        <h2>Mã hóa</h2>
+        <input type="file" id="plainFileInput">
+        <label>Chọn chế độ:</label>
+        <select id="encryptMode">
+            <option value="ECB">ECB</option>
+            <option value="CBC">CBC</option>
+        </select>
+        <label>Chọn kích thước khóa:</label>
+        <select id="encryptKeySize">
+            <option value="128">AES-128</option>
+            <option value="192">AES-192</option>
+            <option value="256">AES-256</option>
+        </select>
+        <button id="generateKey">🔑 Generate Key</button>
+        <label>Nhập khóa:</label>
+        <input type="text" id="encryptKey" placeholder="Nhập khóa">
+        <input type="text" id="encrypt-iv" placeholder="IV - 16 ký tự" style="display: none;">
+        <button id="encryptBtn">🔒 Mã hóa</button>
+        <textarea id="encryptedOutput" readonly placeholder="Bản mã sau khi mã hóa"></textarea>
+        <p>Thời gian mã hóa: <span id="encryptTime">0 ms</span></p>
+    </div>
+    <script type="module" src="./script/encrypt-decrypt.js"></script>
+</body>
+</html>

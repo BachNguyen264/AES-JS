@@ -1,0 +1,109 @@
+/* Reset mặc định */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(to right, #ece9e6, #ffffff);
+    color: #333;
+}
+
+/* Container trái/phải */
+.container {
+    flex: 1;
+    padding: 30px;
+    border: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #fefefe;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.container h2 {
+    margin-bottom: 20px;
+    color: #444;
+    font-size: 1.6rem;
+}
+
+/* Input, select, button chung */
+.container input,
+.container select,
+.container button {
+    width: 80%;
+    margin: 10px 0;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+/* Focus */
+.container input:focus,
+.container select:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.4);
+}
+
+/* Button */
+.container button {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+}
+
+.container button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+/* Textarea */
+textarea {
+    width: 90%;
+    height: 120px;
+    padding: 10px;
+    resize: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    background: #f7f7f7;
+    transition: border 0.3s;
+}
+
+textarea:focus {
+    border-color: #28a745;
+}
+
+/* Thẻ p thời gian */
+p {
+    margin-top: 10px;
+    font-style: italic;
+    color: #666;
+}
+
+/* Responsive mobile */
+@media screen and (max-width: 768px) {
+    body {
+        flex-direction: column;
+    }
+
+    .container {
+        width: 100%;
+        border: none;
+        border-bottom: 1px solid #ccc;
+    }
+}
